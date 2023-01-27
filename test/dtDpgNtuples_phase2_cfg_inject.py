@@ -150,15 +150,14 @@ process.load("L1Trigger.DTTriggerPhase2.dtTriggerPhase2PrimitiveDigis_cfi")
 # process.CalibratedDigis.dtDigiTag = "muonDTDigis"
 process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
 process.CalibratedDigis.scenario = 0
-process.CalibratedDigis.tTrigModeConfig.doWirePropCorrection = cms.bool(False) 
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0
 process.dtTriggerPhase2AmPrimitiveDigis = process.dtTriggerPhase2PrimitiveDigis.clone()
 process.dtTriggerPhase2AmPrimitiveDigis.useRPC = options.useRPC
 process.dtTriggerPhase2AmPrimitiveDigis.max_quality_to_overwrite_t0 = 9
 process.dtTriggerPhase2AmPrimitiveDigis.df_extended = 2
-#process.dtTriggerPhase2AmPrimitiveDigis.allow_confirmation = False 
-#process.dtTriggerPhase2AmPrimitiveDigis.tanPhiTh = 1.5
-#process.dtTriggerPhase2AmPrimitiveDigis.chi2Th = 0.1 / 4 
+process.dtTriggerPhase2AmPrimitiveDigis.allow_confirmation = False 
+process.dtTriggerPhase2AmPrimitiveDigis.tanPhiTh = 1.5
+process.dtTriggerPhase2AmPrimitiveDigis.chi2Th = 0.1 / 4 
 #process.dtTriggerPhase2AmPrimitiveDigis.output_confirmed = False
 #process.dtTriggerPhase2AmPrimitiveDigis.cmssw_for_global = True
 
@@ -174,120 +173,12 @@ process.rpcRecHits.rpcDigiLabel = "simMuonRPCDigis"
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
 process.dtNtupleProducer.useExtDataformat = cms.untracked.bool(True)
-process.dtNtupleProducer.shift_coordinates = cms.untracked.bool(True)
+process.dtNtupleProducer.shift_coordinates = cms.untracked.bool(False)
 
 # process.dtTriggerPhase2AmPrimitiveDigis.useBX_correlation = False
 # process.dtTriggerPhase2AmPrimitiveDigis.dT0_correlate_TP = -1
 # process.dtTriggerPhase2AmPrimitiveDigis.allow_confirmation = True
 # process.dtTriggerPhase2AmPrimitiveDigis.max_primitives = 2
-
-dt1DRecHits = cms.EDProducer("DTRecHitProducer",
-    debug = cms.untracked.bool(False),
-    dtDigiLabel = cms.InputTag("muonDTDigis"),
-    recAlgo = cms.string('DTLinearDriftFromDBAlgo'),
-    recAlgoConfig = cms.PSet(
-        debug = cms.untracked.bool(False),
-        doVdriftCorr = cms.bool(True),
-        maxTime = cms.double(420.0),
-        minTime = cms.double(-3.0),
-        readLegacyTTrigDB = cms.bool(True),
-        readLegacyVDriftDB = cms.bool(True),
-        stepTwoFromDigi = cms.bool(False),
-        tTrigMode = cms.string('DTTTrigSyncFromDB'),
-        tTrigModeConfig = cms.PSet(
-            debug = cms.untracked.bool(False),
-            doT0Correction = cms.bool(True),
-            doTOFCorrection = cms.bool(True),
-            doWirePropCorrection = cms.bool(False),
-            tTrigLabel = cms.string(''),
-            t0Label = cms.string(''),
-            tofCorrType = cms.int32(0),
-            vPropWire = cms.double(24.4),
-            wirePropCorrType = cms.int32(0)
-        ),
-        useUncertDB = cms.bool(True)
-    )
-)
-
-
-
-dt4DSegments = cms.EDProducer("DTRecSegment4DProducer",
-    Reco4DAlgoConfig = cms.PSet(
-        AllDTRecHits = cms.bool(True),
-        Reco2DAlgoConfig = cms.PSet(
-            AlphaMaxPhi = cms.double(1.0),
-            AlphaMaxTheta = cms.double(0.9),
-            MaxAllowedHits = cms.uint32(50),
-            MaxChi2 = cms.double(4.0),
-            debug = cms.untracked.bool(False),
-            hit_afterT0_resolution = cms.double(0.03),
-            nSharedHitsMax = cms.int32(2),
-            nUnSharedHitsMin = cms.int32(2),
-            performT0SegCorrection = cms.bool(False),
-            performT0_vdriftSegCorrection = cms.bool(False),
-            perform_delta_rejecting = cms.bool(False),
-            recAlgo = cms.string('DTLinearDriftFromDBAlgo'),
-            recAlgoConfig = cms.PSet(
-                debug = cms.untracked.bool(False),
-                doVdriftCorr = cms.bool(True),
-                maxTime = cms.double(420.0),
-                minTime = cms.double(-3.0),
-                readLegacyTTrigDB = cms.bool(True),
-                readLegacyVDriftDB = cms.bool(True),
-                stepTwoFromDigi = cms.bool(False),
-                tTrigMode = cms.string('DTTTrigSyncFromDB'),
-                tTrigModeConfig = cms.PSet(
-                    debug = cms.untracked.bool(False),
-                    doT0Correction = cms.bool(True),
-                    doTOFCorrection = cms.bool(True),
-                    doWirePropCorrection = cms.bool(False),
-                    t0Label = cms.string(''),
-                    tTrigLabel = cms.string(''),
-                    tofCorrType = cms.int32(0),
-                    vPropWire = cms.double(24.4),
-                    wirePropCorrType = cms.int32(0)
-                ),
-                useUncertDB = cms.bool(True)
-            ),
-            segmCleanerMode = cms.int32(2)
-        ),
-        Reco2DAlgoName = cms.string('DTMeantimerPatternReco'),
-        debug = cms.untracked.bool(False),
-        hit_afterT0_resolution = cms.double(0.03),
-        nUnSharedHitsMin = cms.int32(2),
-        performT0SegCorrection = cms.bool(False),
-        performT0_vdriftSegCorrection = cms.bool(False),
-        perform_delta_rejecting = cms.bool(False),
-        recAlgo = cms.string('DTLinearDriftFromDBAlgo'),
-        recAlgoConfig = cms.PSet(
-            debug = cms.untracked.bool(False),
-            doVdriftCorr = cms.bool(True),
-            maxTime = cms.double(420.0),
-            minTime = cms.double(-3.0),
-            readLegacyTTrigDB = cms.bool(True),
-            readLegacyVDriftDB = cms.bool(True),
-            stepTwoFromDigi = cms.bool(False),
-            tTrigMode = cms.string('DTTTrigSyncFromDB'),
-            tTrigModeConfig = cms.PSet(
-                debug = cms.untracked.bool(False),
-                doT0Correction = cms.bool(True),
-                doTOFCorrection = cms.bool(True),
-                doWirePropCorrection = cms.bool(False),
-                t0Label = cms.string(''),
-                tTrigLabel = cms.string(''),
-                tofCorrType = cms.int32(0),
-                vPropWire = cms.double(24.4),
-                wirePropCorrType = cms.int32(0)
-            ),
-            useUncertDB = cms.bool(True)
-        )
-    ),
-    Reco4DAlgoName = cms.string('DTMeantimerPatternReco4D'),
-    debug = cms.untracked.bool(False),
-    recHits1DLabel = cms.InputTag("dt1DRecHits"),
-    recHits2DLabel = cms.InputTag("dt2DSegments")
-)
-
 
 process.p = cms.Path(process.rpcRecHits
                      + process.dt1DRecHits
