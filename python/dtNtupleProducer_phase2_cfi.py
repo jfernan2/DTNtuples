@@ -40,6 +40,7 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   isoTrigName = cms.untracked.string('none'),
 
                                   shift_filename = cms.untracked.string('L1Trigger/DTTriggerPhase2/data/wire_rawId_x.txt'),
+                                  maxdrift_filename = cms.untracked.string('L1Trigger/DTTriggerPhase2/data/drift_time_per_chamber.txt'),
 
                                   ph1tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   ph1tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),

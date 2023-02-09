@@ -47,11 +47,23 @@ DTNtuplePh2TPGPhiFiller::DTNtuplePh2TPGPhiFiller(edm::ConsumesCollector && colle
   double shift;
   if (ifin3.fail()) {
     throw cms::Exception("Missing Input File")
-        << "MuonPathAnalyticAnalyzer::MuonPathAnalyticAnalyzer() -  Cannot find " << shift_filename_.fullPath();
+        << "DTNtuplePh2TPGPhiFiller::DTNtuplePh2TPGPhiFiller() -  Cannot find " << shift_filename_.fullPath();
   }
   while (ifin3.good()) {
     ifin3 >> rawId >> shift;
     shiftinfo_[rawId] = shift;
+  }
+
+  int wh, st, se, maxdrift;
+  maxdrift_filename_ = edm::FileInPath(m_config->m_stringParams["maxdrift_filename"]);
+  std::ifstream ifind(maxdrift_filename_.fullPath());
+  if (ifind.fail()) {
+    throw cms::Exception("Missing Input File")
+        << "DTNtuplePh2TPGPhiFiller::DTNtuplePh2TPGPhiFiller() -  Cannot find " << maxdrift_filename_.fullPath();
+  }
+  while (ifind.good()) {
+    ifind >> wh >> st >> se >> maxdrift;
+    maxdriftinfo_[wh][st][se] = maxdrift;
   }
 }
 
@@ -165,17 +177,16 @@ void DTNtuplePh2TPGPhiFiller::fill(const edm::Event & ev)
         float position = trig.xLocal() / 1000.;
         float slope = trig.tanPsi() / 1000.;
         if (m_config->m_boolParams["shift_coordinates"]) {
+          int max_drift_tdc = maxdriftinfo_[trig.whNum() + 2][trig.stNum() - 1][trig.scNum()];
           DTWireId wireId(trig.whNum(), trig.stNum(), trig.scNum() + 1, 1, 2, 1);
-          position *= ((float) cmsdt::CELL_SEMILENGTH / (float) cmsdt::MAXDRIFTTDC) / 10;
+          position *= ((float) cmsdt::CELL_SEMILENGTH / (float) max_drift_tdc) / 10;
           position += (cmsdt::SL1_CELLS_OFFSET * cmsdt::CELL_LENGTH) / 10.;
           position += shiftinfo_[wireId.rawId()];
           int sl = trig.slNum();
           if (sl == 1) sl = -1;
           else if (sl == 3) sl = 1;
-
-          slope = (-slope * cmsdt::SLOPE_LSB);
-          // position -= sl * slope * cmsdt::VERT_PHI1_PHI3 / 2;
-
+          slope = -slope * ((float) CELL_SEMILENGTH / max_drift_tdc) * (1) / (CELL_SEMIHEIGHT * 16.);
+          position -= sl * slope * cmsdt::VERT_PHI1_PHI3 / 2;
         }
 
         m_lt_posLoc_x_raw.push_back(position);

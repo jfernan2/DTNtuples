@@ -159,7 +159,8 @@ process.dtTriggerPhase2AmPrimitiveDigis.df_extended = 2
 #process.dtTriggerPhase2AmPrimitiveDigis.allow_confirmation = False 
 #process.dtTriggerPhase2AmPrimitiveDigis.tanPhiTh = 1.5
 #process.dtTriggerPhase2AmPrimitiveDigis.chi2Th = 0.1 / 4 
-#process.dtTriggerPhase2AmPrimitiveDigis.output_confirmed = False
+#process.dtTriggerPhase2AmPrimitiveDigis.output_matcher = True
+process.dtTriggerPhase2AmPrimitiveDigis.maxdrift_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/simple_vdrift.txt')
 #process.dtTriggerPhase2AmPrimitiveDigis.cmssw_for_global = True
 
 
@@ -175,6 +176,7 @@ process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
 process.dtNtupleProducer.useExtDataformat = cms.untracked.bool(True)
 process.dtNtupleProducer.shift_coordinates = cms.untracked.bool(True)
+process.dtNtupleProducer.maxdrift_filename = cms.untracked.string('L1Trigger/DTTriggerPhase2/data/simple_vdrift.txt')
 
 # process.dtTriggerPhase2AmPrimitiveDigis.useBX_correlation = False
 # process.dtTriggerPhase2AmPrimitiveDigis.dT0_correlate_TP = -1
