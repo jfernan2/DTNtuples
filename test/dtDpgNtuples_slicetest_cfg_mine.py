@@ -161,7 +161,8 @@ process.source = cms.Source("NewEventStreamFileReader" if options.runOnDat else 
         fileNames = cms.untracked.vstring()
 )
 
-if options.inputFile :
+if True :
+#if options.inputFile :
 
     print('[dtDpgNtuples_slicetest_cfg.py]: inputFile parameter is non-null running on file:\n\t\t\t{}'.format(options.inputFile))
     # process.source.fileNames = cms.untracked.vstring(options.inputFile)
