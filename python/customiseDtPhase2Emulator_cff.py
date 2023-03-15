@@ -10,6 +10,7 @@ def customiseForPhase2Emulator(process, pathName) :
     #Scenario -> 2 (SliceTest only)
     process.CalibratedDigis.scenario = 2
     process.dtTriggerPhase2PrimitiveDigis.scenario = 2
+    process.dtTriggerPhase2PrimitiveDigis.df_extended = cms.int32(2)
 
     #tTrig and t0 from phase-2 db
     process.CalibratedDigis.tTrigModeConfig.t0Label = 'ph2'
@@ -22,9 +23,12 @@ def customiseForPhase2Emulator(process, pathName) :
     process.dtTriggerPhase2PrimitiveDigis.chi2Th = cms.double(0.01)
     process.dtTriggerPhase2PrimitiveDigis.chi2corTh = cms.double(0.1) #in cm^2
 
+    process.dtTriggerPhase2PrimitiveDigis.maxdrift_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/simple_vdrift.txt')
+
+    process.dtTriggerPhase2PrimitiveDigis.useRPC = False
     #Correlate with BX
-    process.dtTriggerPhase2PrimitiveDigis.useBX_correlation = True
-    process.dtTriggerPhase2PrimitiveDigis.dBX_correlate_TP = 1
+    #process.dtTriggerPhase2PrimitiveDigis.useBX_correlation = True
+    #process.dtTriggerPhase2PrimitiveDigis.dBX_correlate_TP = 1
 
     #Correlate with tanPsi
     #process.dtTriggerPhase2PrimitiveDigis.dTanPsi_correlate_TP = cms.double(9999./4096.)
