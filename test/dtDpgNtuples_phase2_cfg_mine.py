@@ -159,7 +159,7 @@ process.dtTriggerPhase2AmPrimitiveDigis.df_extended = 2
 #process.dtTriggerPhase2AmPrimitiveDigis.allow_confirmation = False 
 #process.dtTriggerPhase2AmPrimitiveDigis.tanPhiTh = 1.5
 #process.dtTriggerPhase2AmPrimitiveDigis.chi2Th = 0.1 / 4 
-#process.dtTriggerPhase2AmPrimitiveDigis.output_matcher = True
+#process.dtTriggerPhase2AmPrimitiveDigis.output_mixer = True
 process.dtTriggerPhase2AmPrimitiveDigis.maxdrift_filename = cms.FileInPath('L1Trigger/DTTriggerPhase2/data/simple_vdrift.txt')
 #process.dtTriggerPhase2AmPrimitiveDigis.cmssw_for_global = True
 
